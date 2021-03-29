@@ -85,7 +85,14 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
     }
     
     private func shapePicker() -> UIViewController {
-        let shapes: [Shape] = [.box, .sphere, .cylinder, .cone, .torus]
+        let shapes: [Shape] = [
+            .box,
+            .sphere,
+            .cylinder,
+            .cone,
+            .torus,
+            .pyramid,
+        ]
         let options = shapes.map { Option(option: $0) }
         
         let selector = OptionSelectorViewController(options: options)
@@ -97,7 +104,16 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
     }
     
     private func colorPicker() -> UIViewController {
-        let colors: [(String, UIColor)] = [("Red", .red), ("Yellow", .yellow), ("Orange", .orange), ("Green", .green), ("Blue", .blue), ("Brown", .brown), ("White", .white)]
+        let colors: [(String, UIColor)] = [
+            ("Red", .red),
+            ("Yellow", .yellow),
+            ("Orange", .orange),
+            ("Green", .green),
+            ("Blue", .blue),
+            ("Brown", .brown),
+            ("White", .white),
+            ("Magenta", .magenta),
+        ]
         let options = colors.map { Option(name: $0.0, option: $0.1, showsDisclosureIndicator: true) }
         
         let selector = OptionSelectorViewController(options: options)
@@ -109,7 +125,13 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
     }
     
     private func sizePicker() -> UIViewController {
-        let sizes: [Size] = [.small, .medium, .large]
+        let sizes: [Size] = [
+            .xsmall,
+            .small,
+            .medium,
+            .large,
+            .xlarge,
+        ]
         let options = sizes.map { Option(option: $0, showsDisclosureIndicator: false) }
         
         let selector = OptionSelectorViewController(options: options)
@@ -125,12 +147,16 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
         let meters: CGFloat
         
         switch size {
+        case .xsmall:
+            meters = 0.015
         case .small:
             meters = 0.033
         case .medium:
             meters = 0.1
         case .large:
             meters = 0.3
+        case .xlarge:
+            meters = 0.5
         }
         
         switch shape {
@@ -143,7 +169,9 @@ class OptionsContainerViewController: UIViewController, UINavigationControllerDe
         case .sphere:
             geometry = SCNSphere(radius: meters)
         case .torus:
-            geometry = SCNTorus(ringRadius: meters*1.5, pipeRadius: meters * 0.2)
+            geometry = SCNTorus(ringRadius: meters * 1.5, pipeRadius: meters * 0.2)
+        case .pyramid:
+            geometry = SCNPyramid(width: meters, height: meters * 1.5, length: meters)
         }
         
         geometry.firstMaterial?.diffuse.contents = color
